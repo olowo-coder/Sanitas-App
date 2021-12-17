@@ -2,6 +2,7 @@ package com.example.sanitasapp.services.ServicesImpl;
 
 import com.example.sanitasapp.models.Patient;
 import com.example.sanitasapp.repository.PatientRepository;
+import com.example.sanitasapp.services.PatientServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class PatientSerImpel {
+public class PatientSerImpel implements PatientServices {
 
     private final PatientRepository patientRepository;
 

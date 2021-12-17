@@ -1,10 +1,14 @@
 package com.example.sanitasapp.controller;
 
 import com.example.sanitasapp.models.Users;
+import com.example.sanitasapp.services.AppointmentServices;
+import com.example.sanitasapp.services.DoctorServices;
+import com.example.sanitasapp.services.PatientServices;
 import com.example.sanitasapp.services.ServicesImpl.AppointmentSerImpl;
 import com.example.sanitasapp.services.ServicesImpl.DoctorSerImpl;
 import com.example.sanitasapp.services.ServicesImpl.PatientSerImpel;
 import com.example.sanitasapp.services.ServicesImpl.UsersSerImpel;
+import com.example.sanitasapp.services.UsersServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,14 +22,14 @@ import java.util.Optional;
 
 @Controller
 public class UserController {
-    private final UsersSerImpel usersServices;
-    private final PatientSerImpel patientServices;
-    private final DoctorSerImpl doctorServices;
-    private final AppointmentSerImpl appointmentService;
+    private final UsersServices usersServices;
+    private final PatientServices patientServices;
+    private final DoctorServices doctorServices;
+    private final AppointmentServices appointmentService;
 
 
     @Autowired
-    public UserController(UsersSerImpel usersServices, PatientSerImpel patientServices, DoctorSerImpl doctorServices, AppointmentSerImpl appointmentService) {
+    public UserController(UsersServices usersServices, PatientServices patientServices, DoctorServices doctorServices, AppointmentServices appointmentService) {
         this.usersServices = usersServices;
         this.patientServices = patientServices;
         this.doctorServices = doctorServices;

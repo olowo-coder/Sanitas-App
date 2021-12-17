@@ -1,11 +1,16 @@
 package com.example.sanitasapp.controller;
 
 import com.example.sanitasapp.models.Patient;
+import com.example.sanitasapp.models.Payment;
 import com.example.sanitasapp.models.Users;
+import com.example.sanitasapp.services.AppointmentServices;
+import com.example.sanitasapp.services.PatientServices;
+import com.example.sanitasapp.services.PaymentServices;
 import com.example.sanitasapp.services.ServicesImpl.AppointmentSerImpl;
 import com.example.sanitasapp.services.ServicesImpl.PatientSerImpel;
+import com.example.sanitasapp.services.ServicesImpl.PaymentSerImpl;
 import com.example.sanitasapp.services.ServicesImpl.UsersSerImpel;
-import com.fasterxml.jackson.annotation.OptBoolean;
+import com.example.sanitasapp.services.UsersServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,21 +25,32 @@ import java.util.Optional;
 
 @Controller
 public class PatientController {
-    private final PatientSerImpel patientServices;
-    private final AppointmentSerImpl appointmentServices;
-    private final UsersSerImpel usersServices;
+    private final PatientServices patientServices;
+    private final AppointmentServices appointmentServices;
+    private final UsersServices usersServices;
+    private final PaymentServices paymentService;
 
     @Autowired
-    public PatientController(PatientSerImpel patientServices, AppointmentSerImpl appointmentServices, UsersSerImpel usersServices) {
+    public PatientController(PatientServices patientServices, AppointmentServices appointmentServices, UsersServices usersServices, PaymentServices paymentService) {
         this.patientServices = patientServices;
         this.appointmentServices = appointmentServices;
         this.usersServices = usersServices;
+        this.paymentService = paymentService;
     }
 
     @GetMapping("/viewPatients")
     public String viewAppointments(Model model){
         model.addAttribute("allPatients", patientServices.getAllPatients());
         return "patients";
+    }
+
+    @GetMapping("/viewPatientAppointment")
+    public String viewPatientAppointments(Model model, HttpServletRequest request){
+        HttpSession session = request.getSession();
+        Patient patient = (Patient) session.getAttribute("person");
+        model.addAttribute("patientRecord", appointmentServices.getAllAppointmentByPatientId(patient.getPatientId()));
+        model.addAttribute("paymentStatus", paymentService);
+        return "patient-appointments";
     }
 
     @GetMapping("/patientDashboard")
@@ -54,7 +70,7 @@ public class PatientController {
 
     @PostMapping("/addPatient")
     public String addPatient(@ModelAttribute("patient") Patient patient){
-        Users  user = Users.builder().username(patient.getUsername()).password(patient.getPassword()).build();
+        Users  user = Users.builder().username(patient.getUsername() + "@patient.com").password(patient.getPassword()).build();
         String data = patient.getUsername();
         patient.setUsername(data + "@patient.com");
         usersServices.addUser(user);

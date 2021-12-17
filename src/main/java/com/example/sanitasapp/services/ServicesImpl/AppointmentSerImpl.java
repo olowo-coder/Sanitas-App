@@ -2,6 +2,7 @@ package com.example.sanitasapp.services.ServicesImpl;
 
 import com.example.sanitasapp.models.Appointment;
 import com.example.sanitasapp.repository.AppointmentRepository;
+import com.example.sanitasapp.services.AppointmentServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class AppointmentSerImpl {
+public class AppointmentSerImpl implements AppointmentServices {
     private final AppointmentRepository appointmentRepository;
 
     @Autowired
@@ -41,5 +42,9 @@ public class AppointmentSerImpl {
 
     public void deleteAppointment(Long appointmentId){
         appointmentRepository.deleteById(appointmentId);
+    }
+
+    public Appointment getAppointmentById (Long appointmentId){
+       return appointmentRepository.findById(appointmentId).get();
     }
 }

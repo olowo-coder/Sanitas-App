@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <link rel="shortcut icon" type="image/x-icon" th:href="@{assets/img/favicon.ico}">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{assets/img/logo.png}">
     <title>Sanitas Care</title>
     <!--    <link th:href="@{https://fonts.googleapis.com/icon?family=Material+Icons}" rel="stylesheet">-->
     <link rel="stylesheet" type="text/css" th:href="@{assets/css/bootstrap.min.css}">
@@ -185,12 +185,13 @@
 										<th>Appointment Date</th>
 										<th>Appointment Time</th>
 										<th>Status</th>
-										<th class="text-right">Action</th>
+										<th class="text-right">Payment Status</th>
+                                        <th>Action</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr th:if="${(allAppointment != null )}" th:each = "listAppoint: ${allAppointment}">
-										<td>APT0001</td>
+										<td th:text="${'APT000' + listAppoint.getAppointmentId()}"></td>
 										<td><img width="28" height="28" th:src="@{assets/img/user.jpg}" class="rounded-circle m-r-5" alt="" th:text="${listAppoint.patientName}" ></td>
 										<td>35</td>
 
@@ -203,9 +204,10 @@
 										<td th:text="${listAppoint.dateOfAppointment}"></td>
 										<td th:text="${listAppoint.timeOfMeeting}"></td>
 
-										<td th:if="${(listAppoint.status != null && listAppoint.status == 'inactive')}"><span class="custom-badge status-red"  th:text="${listAppoint.status}"></span></td>
-                                        <td th:if="${(listAppoint.status != null && listAppoint.status == 'active')}"><span class="custom-badge status-green"  th:text="${listAppoint.status}"></span></td>
-                                        <td th:if="${(listAppoint.status == null )}"><span class="custom-badge status-red" >Pending</span></td>
+										<td th:if="${(listAppoint.status != null && listAppoint.status == 'Inactive')}"><span class="custom-badge status-red"  th:text="${listAppoint.status}"></span></td>
+                                        <td th:if="${(listAppoint.status != null && listAppoint.status == 'Active')}"><span class="custom-badge status-green"  th:text="${listAppoint.status}"></span></td>
+                                        <td th:if="${(paymentStatus.getPaymentByAppointmentId(listAppoint.getAppointmentId()) == null)}"><span class="custom-badge status-red" >Pending</span></td>
+                                        <td th:if="${(paymentStatus.getPaymentByAppointmentId(listAppoint.getAppointmentId()) != null)}"><span class="custom-badge status-green" th:text="${paymentStatus.getPaymentByAppointmentId(listAppoint.getAppointmentId()).status}"></span></td>
 
 										<td class="text-right">
 											<div class="dropdown dropdown-action">
@@ -242,6 +244,7 @@
 										<td>30 Dec 2018</td>
 										<td>10:00am - 11:00am</td>
 										<td><span class="custom-badge status-green">Active</span></td>
+                                        <td><span class="custom-badge status-red">Pending</span></td>
 										<td class="text-right">
 											<div class="dropdown dropdown-action">
 												<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>

@@ -33,7 +33,7 @@ public class Payment {
     @CreationTimestamp
     private LocalDateTime dateOfPayment;
 
-    @ManyToOne(
+    @OneToOne(
             cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER
     )

@@ -3,9 +3,14 @@ package com.example.sanitasapp.controller;
 import com.example.sanitasapp.models.Appointment;
 import com.example.sanitasapp.models.Doctor;
 import com.example.sanitasapp.models.Patient;
+import com.example.sanitasapp.services.AppointmentServices;
+import com.example.sanitasapp.services.DoctorServices;
+import com.example.sanitasapp.services.PatientServices;
+import com.example.sanitasapp.services.PaymentServices;
 import com.example.sanitasapp.services.ServicesImpl.AppointmentSerImpl;
 import com.example.sanitasapp.services.ServicesImpl.DoctorSerImpl;
 import com.example.sanitasapp.services.ServicesImpl.PatientSerImpel;
+import com.example.sanitasapp.services.ServicesImpl.PaymentSerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,15 +23,17 @@ import java.util.Optional;
 
 @Controller
 public class AppointmentController {
-    private final AppointmentSerImpl appointmentServices;
-    private final DoctorSerImpl doctorServices;
-    private final PatientSerImpel patientServices;
+    private final AppointmentServices appointmentServices;
+    private final DoctorServices doctorServices;
+    private final PatientServices patientServices;
+    private final PaymentServices paymentService;
 
     @Autowired
-    public AppointmentController(AppointmentSerImpl appointmentServices, DoctorSerImpl doctorServices, PatientSerImpel patientServices) {
+    public AppointmentController(AppointmentServices appointmentServices, DoctorServices doctorServices, PatientServices patientServices, PaymentServices paymentService) {
         this.appointmentServices = appointmentServices;
         this.doctorServices = doctorServices;
         this.patientServices = patientServices;
+        this.paymentService = paymentService;
     }
 
     @PostMapping("/appointmentWeb")
@@ -57,11 +64,13 @@ public class AppointmentController {
     @GetMapping("/viewAppointment")
     public String viewAppointments(Model model){
         model.addAttribute("allAppointment", appointmentServices.getAllAppointment());
+        model.addAttribute("paymentStatus", paymentService);
         return "appointments";
     }
 
     @GetMapping("/deleteAppointment/{appointmentId}")
     public String deleteAppointment(@PathVariable Long appointmentId){
+        paymentService.deletePaymentByAppointmentId(appointmentId);
         appointmentServices.deleteAppointment(appointmentId);
         return "redirect:/viewAppointment";
     }

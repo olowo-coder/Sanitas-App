@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <link rel="shortcut icon" type="image/x-icon" th:href="@{assets/img/favicon.ico}">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{assets/img/logo.png}">
     <title>Sanitas Care</title>
     <link th:href="@{https://fonts.googleapis.com/icon?family=Material+Icons}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{assets/css/bootstrap.min.css}">
@@ -186,7 +186,7 @@
                         </div>
                     </div> -->
                     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                        <a href="patient-outstanding.html"><div class="dash-widget">
+                        <a th:href="@{/viewPatientAppointment}"><div class="dash-widget">
                             <span class="dash-widget-bg4"><i class="fa fa-money" aria-hidden="true"></i></span>
                             <div class="dash-widget-info text-right">
                                <h3>Payment</h3>

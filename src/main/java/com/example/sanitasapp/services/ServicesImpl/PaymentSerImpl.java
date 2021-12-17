@@ -5,8 +5,10 @@ import com.example.sanitasapp.repository.PaymentRepository;
 import com.example.sanitasapp.services.PaymentServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class PaymentSerImpl implements PaymentServices {
     private final PaymentRepository paymentRepository;
     @Autowired
@@ -14,7 +16,16 @@ public class PaymentSerImpl implements PaymentServices {
         this.paymentRepository = paymentRepository;
     }
 
-    public void addPaymentToInventory(Payment payment){
+
+    public Payment getPaymentByAppointmentId(Long appointmentId){
+        return paymentRepository.getPaymentByAppointmentAppointmentId(appointmentId);
+    }
+
+    public void deletePaymentByAppointmentId(Long appointmentId){
+        paymentRepository.deleteByAppointmentAppointmentId(appointmentId);
+    }
+
+    public void savePayment(Payment payment){
         paymentRepository.save(payment);
     }
 }

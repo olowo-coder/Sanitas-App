@@ -2,9 +2,12 @@ package com.example.sanitasapp.controller;
 
 import com.example.sanitasapp.models.Doctor;
 import com.example.sanitasapp.models.Users;
+import com.example.sanitasapp.services.AppointmentServices;
+import com.example.sanitasapp.services.DoctorServices;
 import com.example.sanitasapp.services.ServicesImpl.AppointmentSerImpl;
 import com.example.sanitasapp.services.ServicesImpl.DoctorSerImpl;
 import com.example.sanitasapp.services.ServicesImpl.UsersSerImpel;
+import com.example.sanitasapp.services.UsersServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,12 +19,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class DoctorController {
 
-    private final DoctorSerImpl doctorServices;
-    private final AppointmentSerImpl appointmentServices;
-    private final UsersSerImpel usersServices;
+    private final DoctorServices doctorServices;
+    private final AppointmentServices appointmentServices;
+    private final UsersServices usersServices;
 
     @Autowired
-    public DoctorController(DoctorSerImpl doctorServices, AppointmentSerImpl appointmentServices, UsersSerImpel usersServices) {
+    public DoctorController(DoctorServices doctorServices, AppointmentServices appointmentServices, UsersServices usersServices) {
         this.doctorServices = doctorServices;
         this.appointmentServices = appointmentServices;
         this.usersServices = usersServices;
@@ -38,7 +41,7 @@ public class DoctorController {
 
     @PostMapping("/addDoctor")
     public String addDoctor(@ModelAttribute("doctor") Doctor doctor){
-        Users user = Users.builder().username(doctor.getUsername()).password(doctor.getPassword()).build();
+        Users user = Users.builder().username(doctor.getUsername() + "@doctor.com").password(doctor.getPassword()).build();
         usersServices.addUser(user);
         String data = doctor.getUsername();
         doctor.setUsername(data + "@doctor.com");
